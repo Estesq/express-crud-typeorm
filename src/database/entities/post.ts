@@ -22,4 +22,6 @@ export class PostEntity {
 
   @UpdateDateColumn({ name: "updated_at", type: "timestamp", nullable: true })
   updated_at: Date;
+  
+  
 }

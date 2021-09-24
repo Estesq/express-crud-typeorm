@@ -30,7 +30,7 @@ export class PostService {
     return deletedPost;
   }
   public single = async (id: string) => {
-    const singlePost = await this.postRepository.findOne(id);
+    const singlePost = await this.postRepository.createQueryBuilder("post").where("post.id = :id",{id}).getOne();
     return singlePost;
   } 
 }

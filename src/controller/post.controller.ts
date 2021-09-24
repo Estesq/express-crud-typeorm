@@ -17,7 +17,7 @@ export class PostController {
       const posts = await this.postService.index();
       res.status(200).send(posts).json();
     } catch (error: any) {
-      res.status(400).send({ error: error.message });
+      res.status(400).send("Error! Try again");
     }
   };
 
@@ -27,7 +27,7 @@ export class PostController {
       const newPost = await this.postService.create(post);
       res.status(200).send(newPost);
     } catch (error: any) {
-      res.status(400).send({ error: error.message });
+      res.status(400).send("Error! Try again");
     }
   };
 
@@ -35,26 +35,38 @@ export class PostController {
     try {
       const post = req.body as PostEntity;
       const id = req.params["id"];
-      res.status(200).send(this.postService.update(post, id));
+      const result = await this.postService.update(post, id)
+      if(result.affected === 0){
+        res.status(200).send("Error! Try again");
+      }
+      else {
+        res.status(200).send("Record has been added successfully!")
+      }
     } catch (error: any) {
-      res.status(400).send({ error: error.message });
+      res.status(400).send("Error! Try again");
     }
   };
 
   public delete = async (req: Request, res: Response) => {
     try {
       const id = req.params["id"];
-      res.status(200).send(this.postService.delete(id));
+      const result = await this.postService.delete(id)
+      if(result.affected === 0){
+        res.status(200).send("Error! Try again");
+      }
+      else {
+        res.status(200).send("Record has been deleted successfully!")
+      }
     } catch (error: any) {
-      res.status(400).send({ error: error.message });
+      res.status(400).send("Error! Try again");
     }
   };
   public single = async (req: Request, res: Response) => {
     try {
       const id = req.params["id"];
-      res.status(200).send(this.postService.single(id));
+      res.status(200).send(await this.postService.single(id));
     } catch (error: any) {
-      res.status(400).send({ error: error.message });
+      res.status(400).send("Error! Try again");
     }
   };
 
@@ -63,6 +75,6 @@ export class PostController {
     this.router.post("/", this.create);
     this.router.put("/:id", this.update);
     this.router.delete("/:id", this.delete);
-    this.router.get("/:id", this.delete);
+    this.router.get("/:id", this.single);
   }
 }

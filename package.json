@@ -4,8 +4,8 @@
   "description": "Blog",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc ",
-    "start:dev": "nodemon ./build/server.js"
+    "tsc": "tsc",
+    "start:dev": "npm run tsc && nodemon ./build/server.js"
   },
   "keywords": [],
   "author": "bautistaj",
